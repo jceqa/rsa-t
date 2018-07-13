@@ -19,7 +19,7 @@ import java.util.List;
 public class AGHelper {
  
     public static List<List<Boolean>> leerTopologia(String pathTopologia) throws FileNotFoundException {
-        FileReader fr = new FileReader(pathTopologia + "\\topologia.txt");
+        FileReader fr = new FileReader(pathTopologia + "/topologia.txt");
         BufferedReader bf = new BufferedReader(fr);
         String fila;
         int i;
@@ -46,7 +46,7 @@ public class AGHelper {
     }
 
     public static int leerParametro(String pathTopologia, String parametro) throws FileNotFoundException {
-        FileReader fr = new FileReader(pathTopologia + "\\parametros.txt");
+        FileReader fr = new FileReader(pathTopologia + "/parametros.txt");
         BufferedReader bf = new BufferedReader(fr);
         String fila, leido = "";
         String aux = "";
@@ -82,7 +82,7 @@ public class AGHelper {
     }
 
     public static double leerProbabMutacion(String pathTopologia, String parametro) throws FileNotFoundException {
-        FileReader fr = new FileReader(pathTopologia + "\\parametros.txt");
+        FileReader fr = new FileReader(pathTopologia + "/parametros.txt");
         BufferedReader bf = new BufferedReader(fr);
         String fila, leido = "";
         String aux = "";
@@ -220,7 +220,7 @@ public class AGHelper {
                 }
                 demandaInfo.setX(Integer.valueOf(valor));
                 
-                demandaInfo.setCantRanuras(9);
+                demandaInfo.setRanurasTransponder((int) (Math.random() * 19) + 1);
 
                 demandasInfo.add(demandaInfo);
 

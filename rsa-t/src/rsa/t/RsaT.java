@@ -30,8 +30,8 @@ public class RsaT {
         algoritmos.add("moga2");
 //        algoritmos.add("ilp");
         for (String algoritmo : algoritmos) {
-            String pathGeneral = "D:\\Tesis-Src\\rsa-t\\rsa-t\\src\\archivos\\" + topologia + "\\";
-            String pathInicial = pathGeneral + tipoDeCarga + "\\";
+            String pathGeneral = "/home/julio/Descargas/rsa-t-master/rsa-t/src/archivos/" + topologia + "/";
+            String pathInicial = pathGeneral + tipoDeCarga + "/";
             List<List<Solucion>> todosLosConjuntos = new ArrayList<>();
             List<List<Boolean>> topologia = AGHelper.leerTopologia(pathGeneral);
             int cantLlamadasGA = AGHelper.leerParametro(pathGeneral, "cantidad de corridas independientes");
@@ -39,7 +39,7 @@ public class RsaT {
             int totalRanuras = AGHelper.leerParametro(pathGeneral, "cantidad de longitudes de onda por fibra");
             int criterioDeParada = AGHelper.leerParametro(pathGeneral, "criterio de parada");
             double probabMutacion = AGHelper.leerProbabMutacion(pathGeneral, "probabilidad de mutacion");
-            int tamanoVentana = AGHelper.leerParametro(pathGeneral, "tamano ventana transpondedor");
+            int tamanoVentana = 20;//AGHelper.leerParametro(pathGeneral, "tamano ventana transpondedor");
         /*
         *  1. MOGA spectrum allocation random
         *  2. MOGA spectrum allocation first fit
@@ -59,7 +59,7 @@ public class RsaT {
 
             for (int a = 0; a < k; a++) {
                 for (int d = 0; d < cantCantidadDeDemandas; d++) {
-                    pathActual = pathInicial + "k" + (a + 1) + "\\cantSolicitada" + cantDemandas.get(d) + "\\";
+                    pathActual = pathInicial + "k" + (a + 1) + "/cantSolicitada" + cantDemandas.get(d) + "/";
                     demandaInfoList.addAll(llenarDemandInfo(pathActual + "ga.txt"));
                     saltoMayor = getSaltoMayorDeLaRed(demandaInfoList, a + 1);
                     costoMayor = (getCostoMayorDeLaRed(demandaInfoList) + 1) * saltoMayor; // el 1 es agregado para banda guarda
@@ -77,7 +77,7 @@ public class RsaT {
                             for (int i = 0; i < cantLlamadasGA; i++) {
 
                                 TInicio = System.currentTimeMillis();
-                                todosLosConjuntos.add(ga(topologia, cantSolucionesIniciales, totalRanuras, criterioDeParada, probabMutacion, demandaInfoList, (a + 1), algoritmo));
+                                todosLosConjuntos.add(ga(topologia, cantSolucionesIniciales, totalRanuras, criterioDeParada, probabMutacion, demandaInfoList, (a + 1), algoritmo, tamanoVentana));
                                 TFin = System.currentTimeMillis();
 
                                 // guardar tambien las rutas y ranuras elegidas
@@ -455,7 +455,7 @@ public class RsaT {
     *
     * */
 
-    public static List<Solucion> ga(List<List<Boolean>> topologia, int cantSolucionesIniciales, int totalRanuras, int criterioDeParada, double probabilidaMutacion, List<DemandaInfo> demandasInfo, int k, String algoritmo) throws FileNotFoundException {
+    public static List<Solucion> ga(List<List<Boolean>> topologia, int cantSolucionesIniciales, int totalRanuras, int criterioDeParada, double probabilidaMutacion, List<DemandaInfo> demandasInfo, int k, String algoritmo, int tamanoVentana) throws FileNotFoundException {
 
         int j, reproductor1, reproductor2, candidato1 = -1, candidato2 = -1;
         Solucion hijo1, hijo2; // inicializar con enlaces con ranuras vacias
@@ -532,6 +532,9 @@ public class RsaT {
                 mutacion (hijo1, probabilidaMutacion, topologia, totalRanuras, demandasInfo, algoritmo);
                 mutacion (hijo2, probabilidaMutacion, topologia, totalRanuras, demandasInfo, algoritmo);
 
+                asignarTransponders(hijo1, demandasInfo, tamanoVentana);
+                asignarTransponders(hijo2, demandasInfo, tamanoVentana);
+                
                 poblacionNueva.add(hijo1);
                 poblacionNueva.add(hijo2);
 
@@ -626,6 +629,12 @@ public class RsaT {
 
         hijo2.setFitness(hijo2.getCosto()/costoMayor + hijo2.getSaltos()/saltoMayor + hijo2.getEspectro()/espectroMayor);
 
+    }
+    
+    public static void asignarTransponders(Solucion solucion, List<DemandaInfo> demandasInfo, Integer capacidadTransponder){
+        for(Enlace enlace : solucion.getEnlaces()){
+            
+        }
     }
 
     public static void mutacion (Solucion solucion, double probabilidadMutacion, List<List<Boolean>> topologia, Integer totalRanuras, List<DemandaInfo> demandasInfo, String algoritmo) {

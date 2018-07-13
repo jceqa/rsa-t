@@ -21,10 +21,10 @@ public class DemandaInfo {
     private Double saltos;
     private int x;
     List<Integer> ruta;
-    private int cantRanuras;
+    private int ranurasTransponder;
 
 
-    public DemandaInfo(String demandaId, int origen, int destino, int traf, Double saltos, int x, List<Integer> ruta, int cantRanuras) {
+    public DemandaInfo(String demandaId, int origen, int destino, int traf, Double saltos, int x, List<Integer> ruta, int ranuras_transponder) {
         this.demandaId = demandaId;
         this.origen = origen;
         this.destino = destino;
@@ -32,7 +32,7 @@ public class DemandaInfo {
         this.saltos = saltos;
         this.x = x;
         this.ruta = ruta;
-        this.cantRanuras = cantRanuras;
+        this.ranurasTransponder = ranuras_transponder;
     }
 
     public DemandaInfo(){
@@ -43,15 +43,15 @@ public class DemandaInfo {
         saltos = -1.0;
         x = -1;
         ruta = new ArrayList<>();
-        cantRanuras = -1;
+        ranurasTransponder = -1;
     }
 
-    public int getCantRanuras() {
-        return cantRanuras;
+    public int getRanurasTransponder() {
+        return ranurasTransponder;
     }
 
-    public void setCantRanuras(int cantRanuras) {
-        this.cantRanuras = cantRanuras;
+    public void setRanurasTransponder(int ranurasTransponder) {
+        this.ranurasTransponder = ranurasTransponder;
     }
 
     public String getDemandaId() {
